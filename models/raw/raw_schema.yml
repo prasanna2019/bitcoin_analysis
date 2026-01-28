@@ -1,0 +1,99 @@
+version: 2
+
+sources:
+  - name: google_bitcoin
+    database: bigquery-public-data
+    schema: crypto_bitcoin
+    tables:
+      - name: transactions
+        description: "The raw public Bitcoin transactions table from Google Cloud."
+      - name: blocks
+        description: "The raw blocks from Google Cloud"
+
+models:
+  - name: raw_transactions
+    description: "Incremental staging table for Bitcoin transactions."
+    columns:
+      - name: hash
+        description: "The unique hash of the transaction."
+        tests:
+          - unique
+          - not_null
+
+      - name: size
+        description: "The size of the transaction in bytes."
+
+      - name: virtual_size
+        description: "The virtual size of the transaction (vBytes)."
+
+      - name: version
+        description: "The protocol version number of this transaction."
+
+      - name: lock_time
+        description: "The block number or timestamp at which this transaction is unlocked."
+
+      - name: block_hash
+        description: "The hash of the block containing this transaction."
+        tests:
+          - not_null
+
+      - name: block_number
+        description: "The height of the block containing this transaction."
+        tests:
+          - not_null
+
+      - name: block_timestamp
+        description: "The time the block was mined."
+        tests:
+          - not_null
+
+      - name: block_timestamp_month
+        description: "A truncated date (Month-01) used for BigQuery partitioning."
+        tests:
+          - not_null
+
+      - name: input_count
+        description: "The number of inputs included in the transaction."
+
+  - name: raw_blocks
+    description: "Incremental staging table for Bitcoin blocks."
+    columns:
+      - name: hash
+        description: "The unique hash of the block."
+        tests:
+          - unique
+          - not_null
+
+      - name: size
+        description: "The total size of the block in bytes."
+
+      - name: stripped_size
+        description: "The size of the block excluding witness data."
+
+      - name: weight
+        description: "The block weight as defined in SegWit (4 * non-witness + witness)."
+
+      - name: number
+        description: "The block height (sequential block number)."
+        tests:
+          - unique
+          - not_null
+
+      - name: version
+        description: "The block version number."
+
+      - name: merkle_root
+        description: "The root node of a Merkle tree of all transactions in the block."
+
+      - name: timestamp
+        description: "The time the block was mined."
+        tests:
+          - not_null
+
+      - name: timestamp_month
+        description: "A truncated date (Month-01) for BigQuery partitioning."
+        tests:
+          - not_null
+
+      - name: nonce
+        description: "The 32-bit field whose value is set so that the hash of the block will contain a run of leading zeros."
