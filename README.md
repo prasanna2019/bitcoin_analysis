@@ -1,15 +1,108 @@
-Welcome to your new dbt project!
+Bitcoin On-Chain Analytics (BigQuery + dbt)
+Overview
 
-### Using the starter project
+This project builds a Bitcoin on-chain analytics warehouse using Google BigQuery and dbt.
+It models raw blockchain data from the public crypto_bitcoin BigQuery dataset into analytics-ready metrics using a medallion architecture.
 
-Try running the following commands:
-- dbt run
-- dbt test
+The focus is on correct Bitcoin data modeling, UTXO-aware transformations, and warehouse-first analytics.
 
+Tech Stack
 
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [chat](https://community.getdbt.com/) on Slack for live discussions and support
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+Data Warehouse: Google BigQuery
+
+Source Data: bigquery-public-data.crypto_bitcoin
+
+Transformation: dbt (SQL)
+
+Architecture: Medallion (Bronze / Silver / Gold)
+
+Data Source
+
+Public Bitcoin blockchain data hosted in BigQuery
+
+Includes blocks, transactions, inputs, and outputs
+
+No assumed fields (e.g. block height, subsidy, difficulty)
+
+All economic metrics are derived directly from transaction and output data.
+
+Architecture
+🥉 Bronze
+
+Raw views over BigQuery public tables
+
+No transformations
+
+🥈 Silver
+
+Canonical blockchain entities
+
+UTXO-aware models
+
+Re-org-safe incremental processing
+
+Examples:
+
+silver_blocks
+
+silver_transactions
+
+silver_outputs
+
+silver_inputs
+
+🥇 Gold
+
+Aggregated, analytics-ready tables
+
+Daily Bitcoin network and economic metrics
+
+Stable schemas for BI tools
+
+Metrics Covered
+
+Daily transaction count
+
+Blocks per day
+
+On-chain BTC transferred
+
+Miner revenue (coinbase-based)
+
+Transaction fee trends
+
+Average BTC per transaction
+
+All metrics follow UTXO-correct accounting.
+
+dbt Usage
+
+SQL-only transformations
+
+Partitioned and clustered BigQuery tables
+
+Incremental models using insert_overwrite
+
+Schema enforcement and documentation
+
+dbt run
+dbt test
+dbt docs generate
+
+Why BigQuery
+
+Native hosting of Bitcoin public data
+
+Scales to blockchain-sized datasets
+
+Strong integration with dbt and BI tools
+
+Use Cases
+
+Bitcoin on-chain analysis
+
+Analytics engineering portfolio project
+
+Foundation for Looker dashboards
+
+Crypto / fintech data engineering workflows
