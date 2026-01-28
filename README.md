@@ -1,16 +1,16 @@
-#Bitcoin On-Chain Analytics (BigQuery + dbt)
-##Overview
+# Bitcoin On-Chain Analytics (BigQuery + dbt)
+## Overview
 
 This project builds a Bitcoin on-chain analytics warehouse using Google BigQuery and dbt.
 It models raw blockchain data from the public crypto_bitcoin BigQuery dataset into analytics-ready metrics using a medallion architecture.
 
 The focus is on correct Bitcoin data modeling, UTXO-aware transformations, and warehouse-first analytics.
 
-##Tech Stack
+## Tech Stack
 
 Data Warehouse: Google BigQuery
 
-##Source Data: bigquery-public-data.crypto_bitcoin
+## Source Data: bigquery-public-data.crypto_bitcoin
 
 Transformation: dbt (SQL)
 
